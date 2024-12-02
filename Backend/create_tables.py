@@ -35,10 +35,6 @@ def create_tables():
     if connection:
         cursor = connection.cursor()
         try:
-            # Drop tables if they exist to avoid issues with partial creation
-            cursor.execute("DROP TABLE IF EXISTS OperationsLog, CaseNotes, Cases, Clients, Lawyers;")
-            print("Old tables dropped successfully (if they existed).")
-            
             # Create Lawyers table
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS Lawyers (
@@ -50,7 +46,7 @@ def create_tables():
                     Experience INT NOT NULL
                 );
             """)
-            print("Lawyers table created successfully.")
+            print("Lawyers table checked/created successfully.")
 
             # Create Clients table
             cursor.execute("""
@@ -61,7 +57,7 @@ def create_tables():
                     ContactNumber VARCHAR(20) UNIQUE NOT NULL
                 );
             """)
-            print("Clients table created successfully.")
+            print("Clients table checked/created successfully.")
 
             # Create Cases table
             cursor.execute("""
@@ -75,7 +71,7 @@ def create_tables():
                     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID)
                 );
             """)
-            print("Cases table created successfully.")
+            print("Cases table checked/created successfully.")
 
             # Create CaseNotes table
             cursor.execute("""
@@ -86,7 +82,7 @@ def create_tables():
                     FOREIGN KEY (CaseID) REFERENCES Cases(CaseID)
                 );
             """)
-            print("CaseNotes table created successfully.")
+            print("CaseNotes table checked/created successfully.")
 
             # Create OperationsLog table
             cursor.execute("""
@@ -99,10 +95,10 @@ def create_tables():
                     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """)
-            print("OperationsLog table created successfully.")
+            print("OperationsLog table checked/created successfully.")
 
             connection.commit()
-            print("All tables created and changes committed successfully.")
+            print("All tables checked/created and changes committed successfully.")
 
         except Exception as e:
             print(f"Error creating tables: {e}")
