@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from "react";
-import api from "../Services/api";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const LawyerList = () => {
   const [lawyers, setLawyers] = useState([]);
 
   useEffect(() => {
-    api.get("/lawyers")
-      .then(response => setLawyers(response.data))
-      .catch(error => console.error("Error fetching lawyers", error));
+    axios.get("http://127.0.0.1:5000/lawyers")
+      .then(response => setLawyers(response.data.lawyers || []))
+      .catch(error => console.error("Error fetching lawyers:", error));
   }, []);
+
+  if (!lawyers.length) {
+    return <p>No lawyers found.</p>;
+  }
 
   return (
     <div>
-      <h2>Lawyers</h2>
-      <Link to="/lawyers/form">Add New Lawyer</Link>
+      <h2>List of Lawyers</h2>
       <ul>
-        {lawyers.map(lawyer => (
-          <li key={lawyer.id}>
-            {lawyer.name} - {lawyer.specialization}
-            <Link to={`/lawyers/form/${lawyer.id}`}>Edit</Link>
+        {lawyers.map((lawyer) => (
+          <li key={lawyer.LawyerID}>
+            {lawyer.Name} - {lawyer.Specialization} ({lawyer.Email})
           </li>
         ))}
       </ul>
